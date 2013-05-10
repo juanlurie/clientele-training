@@ -1,23 +1,29 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AsbaBank.Presentation.Shell
 {
     internal class Program
     {
+        private static List<string> history;
+
+        private static int historyIndex;
+
         private static void Main()
         {
             Console.WindowHeight = 40;
             Console.WindowWidth = 120;
 
-            var history = new Stack();
+            history = new List<string>();
+            historyIndex = 0;
 
             PrintHelp();
 
             string line = "";
             while (true)
             {
+                Console.ForegroundColor = ConsoleColor.Gray;
                 ConsoleKeyInfo myKey = Console.ReadKey(true);
 
                 if (myKey.Key == ConsoleKey.Enter)
@@ -30,28 +36,25 @@ namespace AsbaBank.Presentation.Shell
                         return;
 
                     Console.WriteLine();
-                    string[] split = line.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
-                    history.Push(split);
+                    string[] split = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    AddHistoryItem(split);
+
                     TryHandleRequest(split);
 
                     line = "";
                 }
                 else if (myKey.Key == ConsoleKey.Tab)
                 {
-                    IShellCommand command = Environment.CommandFactory.GetShellCommands().FirstOrDefault(x => line != null && x.Key.ToLower().Contains(line.ToLower()));
-                    if (command != null)
-                    {
-                        line = command.Key + " ";
-                        ClearCurrentConsoleLine();
-                        Console.Write(command.Key + " ");
-                    }
+                    line = AutoCompleteLine(line);
                 }
                 else if (myKey.Key == ConsoleKey.UpArrow)
                 {
-                    var historyItem = (string[])history.Pop();
-                    string command = historyItem.Aggregate("", (current, item) => current + item + " ");
-                    line = command;
-                    Console.Write(command);
+                    line = MoveToPreviousHistoryItem(line);
+                }
+                else if (myKey.Key == ConsoleKey.DownArrow)
+                {
+                    line = MoveToNextHistoryItem(line);
                 }
                 else
                 {
@@ -63,13 +66,61 @@ namespace AsbaBank.Presentation.Shell
                     else
                     {
                         if (!string.IsNullOrEmpty(line))
-                        {
                             line = line.Remove(line.Length - 1, 1);
-                        }
+
                         Backspace();
                     }
                 }
             }
+        }
+
+        private static string MoveToNextHistoryItem(string line)
+        {
+            if (history.Count > historyIndex)
+            {
+                ClearCurrentConsoleLine();
+                historyIndex++;
+                string command = history[historyIndex - 1];
+                line = command;
+                Console.Write(command);
+            }
+            return line;
+        }
+
+        private static string MoveToPreviousHistoryItem(string line)
+        {
+            if (historyIndex > 0)
+            {
+                ClearCurrentConsoleLine();
+                historyIndex--;
+                string command = history[historyIndex];
+                line = command;
+                Console.Write(command);
+            }
+            return line;
+        }
+
+        private static string AutoCompleteLine(string line)
+        {
+            IShellCommand command = Environment.CommandFactory.GetShellCommands().FirstOrDefault(x => line != null && x.Key.ToLower().Contains(line.ToLower()));
+            if (command != null)
+            {
+                line = command.Key + " ";
+                ClearCurrentConsoleLine();
+                Console.Write(command.Key + " ");
+            }
+            return line;
+        }
+
+        private static void AddHistoryItem(IEnumerable<string> split)
+        {
+            var historyItem = split.Aggregate("", (current, item) => current + item + " ");
+            historyItem = historyItem.Remove(historyItem.Length - 1);
+            if (history.All(x => x != historyItem))
+            {
+                history.Add(historyItem);
+            }
+            historyIndex = history.Count;
         }
 
         private static void ClearCurrentConsoleLine()
@@ -117,10 +168,13 @@ namespace AsbaBank.Presentation.Shell
             Console.ForegroundColor = ConsoleColor.Green;
 
             Console.WriteLine("Available commands:");
+            Console.WriteLine("");
+            var index = 1;
 
-            foreach (IShellCommand shellCommand in Environment.CommandFactory.GetShellCommands())
+            foreach (var shellCommand in Environment.CommandFactory.GetShellCommands())
             {
-                Console.WriteLine(shellCommand.Usage);
+                Console.WriteLine(index + ". " + shellCommand.Usage);
+                index++;
             }
 
             Console.ForegroundColor = originalColor;
