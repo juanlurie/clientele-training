@@ -31,7 +31,7 @@ namespace AsbaBank.Presentation.Shell.Commands.Account.CloseAccount
                 if (client == null)
                     throw new ArgumentException("Client Id does not exist. Please select another Client Id or register new client");
 
-                var account = Domain.Models.Account.OpenAccount(id);
+                var account = accountRepository.Get(id);
                 account.Close(accountNumber);
                 accountRepository.Add(account);
                 unitOfWork.Commit();

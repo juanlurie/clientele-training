@@ -18,15 +18,11 @@ namespace AsbaBank.Presentation.Shell.Commands.Account.GetAccountBalance
         public void Execute()
         {
             var unitOfWork = Environment.GetUnitOfWork();
-            var clientRepository = unitOfWork.GetRepository<Client>();
+            var accountRepository = unitOfWork.GetRepository<Domain.Models.Account>();
 
             try
             {
-                var client = clientRepository.Get(id);
-                if (client == null)
-                    throw new ArgumentException("Client Id does not exist. Please select another Client Id or register new client");
-
-                var account = Domain.Models.Account.OpenAccount(id);
+                var account = accountRepository.Get(id);
                 var amount = account.GetAccountBalance();
 
                 Environment.Logger.Verbose("Balance for {0} is {1}", account.AccountNumber, amount);

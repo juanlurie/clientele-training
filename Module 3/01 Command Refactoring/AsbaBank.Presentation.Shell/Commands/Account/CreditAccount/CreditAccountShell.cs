@@ -24,15 +24,14 @@ namespace AsbaBank.Presentation.Shell.Commands.Account.CreditAccount
                 throw new ArgumentException(String.Format("Incorrect usage. Usage is: {0}", Usage));
             }
 
-            int accountNumber;
-            var accountNumberResult = int.TryParse(args[1], out accountNumber);
+            var accountNumber = args[1];
 
-            if (!accountNumberResult)
+            if (string.IsNullOrEmpty(accountNumber))
             {
                 throw new ArgumentException(String.Format("Incorrect usage. Usage is: {0}", Usage));
             }
 
-            return new CreditAccount(clientId,accountNumber,amount);
+            return new CreditAccount(clientId, accountNumber, amount);
         }
     }
 }

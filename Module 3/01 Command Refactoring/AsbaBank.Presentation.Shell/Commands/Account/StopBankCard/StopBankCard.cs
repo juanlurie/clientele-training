@@ -27,9 +27,8 @@ namespace AsbaBank.Presentation.Shell.Commands.Account.StopBankCard
                 if (client == null)
                     throw new ArgumentException("Client Id does not exist. Please select another Client Id or register new client");
 
-                var account = Domain.Models.Account.OpenAccount(id);
+                var account = accountRepository.Get(id);
                 account.StopBankCard();
-                accountRepository.Add(account);
                 unitOfWork.Commit();
 
                 Environment.Logger.Verbose("Bank card stopper for {0} -- {1} {2}", account.AccountNumber, client.Name, client.Surname);
