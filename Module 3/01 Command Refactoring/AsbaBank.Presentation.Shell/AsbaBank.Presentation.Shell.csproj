@@ -42,6 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\AddAccount\AddAccount.cs" />
+    <Compile Include="Commands\AddAccount\AddAccountShell.cs" />
     <Compile Include="Commands\RegisterClient.cs" />
     <Compile Include="Commands\RegisterClientShell.cs" />
     <Compile Include="Environment.cs" />

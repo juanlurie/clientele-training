@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using AsbaBank.Infrastructure;
 using AsbaBank.Presentation.Shell.Commands;
+using AsbaBank.Presentation.Shell.Commands.AddAccount;
 
 namespace AsbaBank.Presentation.Shell
 {
@@ -35,7 +36,8 @@ namespace AsbaBank.Presentation.Shell
 
         private static void RegisterCommands()
         {
-            RegsiterCommand(new RegisterClientShell());   
+            RegsiterCommand(new RegisterClientShell());
+            RegsiterCommand(new AddAccountByClientIdShell()); 
         }
 
         private static void RegsiterCommand(IShellCommand command)
