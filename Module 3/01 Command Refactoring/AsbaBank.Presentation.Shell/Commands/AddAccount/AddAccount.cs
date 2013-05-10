@@ -10,9 +10,8 @@ namespace AsbaBank.Presentation.Shell.Commands.AddAccount
         public AddAccountByClientId(int id)
         {
             if (id <= 0)
-            {
                 throw new ArgumentException("Please provide a valid client id.");
-            }
+
             this.id = id;
         }
 
@@ -26,15 +25,13 @@ namespace AsbaBank.Presentation.Shell.Commands.AddAccount
             {
                 var client = clientRepository.Get(id);
                 if (client == null)
-                {
-                    throw new ArgumentException("Please provide a valid client id.");
-                }
+                    throw new ArgumentException("Client Id does not exist. Please select another Client Id or register new client");
 
                 var account = Account.OpenAccount(id);
                 accountRepository.Add(account);
                 unitOfWork.Commit();
 
-                Environment.Logger.Verbose("Registered account {0} for {1} {2}",account.AccountNumber, client.Name, client.Surname);
+                Environment.Logger.Verbose("Registered account {0} for {1} {2}", account.AccountNumber, client.Name, client.Surname);
             }
             catch
             {

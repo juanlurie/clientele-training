@@ -9,30 +9,30 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters;
 using System.Text;
+using Newtonsoft.Json;
+
 /* ===========================================================================================
  * NB! This infratstructure code is meant to simulate various infrastructure concerns.
  * Attempting to understanding this is not recommended or required in order to understand the 
  * general principles being demonstrated.
  * =========================================================================================== */
+
 namespace AsbaBank.Infrastructure
 {
-    using Newtonsoft.Json;
-
     public interface IRepository<TEntity> : ICollection<TEntity> where TEntity : class
     {
         TEntity Get(object id);
         void Update(object id, TEntity item);
     }
 
-    [DebuggerNonUserCode, DebuggerStepThrough]
-    sealed class InMemoryRepository<TEntity> : IRepository<TEntity> where TEntity : class
+    [DebuggerNonUserCode]
+    [DebuggerStepThrough]
+    internal sealed class InMemoryRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         private readonly InMemoryDataStore dataStore;
         private readonly PropertyInfo identityPropertyInfo;
-
-        public int Count { get { return dataStore.Count<TEntity>(); } }
-        public bool IsReadOnly { get { return false; } }
 
         public InMemoryRepository(InMemoryDataStore dataStore)
         {
@@ -40,11 +40,14 @@ namespace AsbaBank.Infrastructure
             identityPropertyInfo = GetIdentityPropertyInformation();
         }
 
-        private PropertyInfo GetIdentityPropertyInformation() 
+        public int Count
         {
-            return typeof(TEntity)
-                .GetProperties()
-                .Single(propertyInfo => Attribute.IsDefined(propertyInfo, typeof(KeyAttribute)));
+            get { return dataStore.Count<TEntity>(); }
+        }
+
+        public bool IsReadOnly
+        {
+            get { return false; }
         }
 
         public IEnumerator<TEntity> GetEnumerator()
@@ -63,17 +66,6 @@ namespace AsbaBank.Infrastructure
                 .AsQueryable<TEntity>()
                 .AsQueryable()
                 .SingleOrDefault(WithMatchingId(id));
-        }
-
-        private Func<TEntity, bool> WithMatchingId(object id)
-        {
-            ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "x");
-            Expression property = Expression.Property(parameter, identityPropertyInfo.Name);
-            Expression target = Expression.Constant(id);
-            Expression equalsMethod = Expression.Equal(property, target);
-            Func<TEntity, bool> predicate = Expression.Lambda<Func<TEntity, bool>>(equalsMethod, parameter).Compile();
-            
-            return predicate;
         }
 
         public void Update(object id, TEntity item)
@@ -97,7 +89,7 @@ namespace AsbaBank.Infrastructure
             }
 
             dataStore.Add(item);
-        }        
+        }
 
         public void Clear()
         {
@@ -120,8 +112,26 @@ namespace AsbaBank.Infrastructure
         {
             return dataStore.Remove(item);
         }
+
+        private PropertyInfo GetIdentityPropertyInformation()
+        {
+            return typeof (TEntity)
+                .GetProperties()
+                .Single(propertyInfo => Attribute.IsDefined(propertyInfo, typeof (KeyAttribute)));
+        }
+
+        private Func<TEntity, bool> WithMatchingId(object id)
+        {
+            ParameterExpression parameter = Expression.Parameter(typeof (TEntity), "x");
+            Expression property = Expression.Property(parameter, identityPropertyInfo.Name);
+            Expression target = Expression.Constant(id);
+            Expression equalsMethod = Expression.Equal(property, target);
+            Func<TEntity, bool> predicate = Expression.Lambda<Func<TEntity, bool>>(equalsMethod, parameter).Compile();
+
+            return predicate;
+        }
     }
-    
+
     public interface IUnitOfWork
     {
         void Commit();
@@ -129,13 +139,14 @@ namespace AsbaBank.Infrastructure
         IRepository<TEntity> GetRepository<TEntity>() where TEntity : class;
     }
 
-    [DebuggerNonUserCode, DebuggerStepThrough]
+    [DebuggerNonUserCode]
+    [DebuggerStepThrough]
     public class InMemoryUnitOfWork : IUnitOfWork
     {
+        private readonly InMemoryDataStore dataStore = new InMemoryDataStore();
         private readonly JsonSerializer serializer = new JsonSerializer();
         private byte[] committedData;
-        private readonly InMemoryDataStore dataStore = new InMemoryDataStore();
-        
+
         public InMemoryUnitOfWork(InMemoryDataStore dataStore)
         {
             this.dataStore = dataStore;
@@ -155,29 +166,32 @@ namespace AsbaBank.Infrastructure
             dataStore.EntityIdentities = restored.EntityIdentities;
         }
 
-        public IRepository<TEntity> GetRepository<TEntity>() where  TEntity : class 
+        public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class
         {
             return new InMemoryRepository<TEntity>(dataStore);
         }
     }
 
-    [DataContract, DebuggerNonUserCode, DebuggerStepThrough]
+    [DataContract]
+    [DebuggerNonUserCode]
+    [DebuggerStepThrough]
     public class InMemoryDataStore
     {
-        [DataMember]
-        internal Dictionary<string, object> Data { get; set; }
-        [DataMember]
-        internal Dictionary<string, int> EntityIdentities { get; set; }
-
         public InMemoryDataStore()
         {
             Data = new Dictionary<string, object>();
             EntityIdentities = new Dictionary<string, int>();
         }
 
+        [DataMember]
+        internal Dictionary<string, object> Data { get; set; }
+
+        [DataMember]
+        internal Dictionary<string, int> EntityIdentities { get; set; }
+
         internal int GetNextId<TEntity>() where TEntity : class
         {
-            string type = typeof(TEntity).ToString();
+            string type = typeof (TEntity).ToString();
 
             if (!EntityIdentities.ContainsKey(type))
             {
@@ -232,7 +246,7 @@ namespace AsbaBank.Infrastructure
 
         private HashSet<TEntity> GetEntityHashSet<TEntity>() where TEntity : class
         {
-            string type = typeof(TEntity).ToString();
+            string type = typeof (TEntity).ToString();
 
             if (!Data.ContainsKey(type))
             {
@@ -242,14 +256,15 @@ namespace AsbaBank.Infrastructure
             }
 
             return ((HashSet<TEntity>)Data[type]);
-        }        
+        }
     }
 
-    [DebuggerNonUserCode, DebuggerStepThrough]
-    class JsonSerializer 
+    [DebuggerNonUserCode]
+    [DebuggerStepThrough]
+    internal class JsonSerializer
     {
-        private readonly Newtonsoft.Json.JsonSerializer serializer;
         private readonly Encoding encoding = Encoding.UTF8;
+        private readonly Newtonsoft.Json.JsonSerializer serializer;
 
         public JsonSerializer()
         {
@@ -258,7 +273,7 @@ namespace AsbaBank.Infrastructure
                 TypeNameHandling = TypeNameHandling.All,
                 DefaultValueHandling = DefaultValueHandling.Ignore,
                 NullValueHandling = NullValueHandling.Ignore,
-                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple,
+                TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple,
                 ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
@@ -279,7 +294,10 @@ namespace AsbaBank.Infrastructure
 
         public virtual void Serialize<T>(TextWriter writer, T graph)
         {
-            using (var jsonWriter = new JsonTextWriter(writer) { Formatting = Formatting.Indented })
+            using (var jsonWriter = new JsonTextWriter(writer)
+            {
+                Formatting = Formatting.Indented
+            })
             {
                 serializer.Serialize(jsonWriter, graph);
             }
@@ -325,7 +343,7 @@ namespace AsbaBank.Infrastructure
 
         public T Deserialize<T>(byte[] serialized)
         {
-            serialized = serialized ?? new byte[] { };
+            serialized = serialized ?? new byte[] {};
 
             if (serialized.Length == 0)
             {
@@ -357,32 +375,32 @@ namespace AsbaBank.Infrastructure
 
         public virtual void Verbose(string message, params object[] values)
         {
-            this.Log(ConsoleColor.DarkGreen, message, values);
+            Log(ConsoleColor.DarkGreen, message, values);
         }
 
         public virtual void Debug(string message, params object[] values)
         {
-            this.Log(ConsoleColor.Green, message, values);
+            Log(ConsoleColor.Green, message, values);
         }
 
         public virtual void Info(string message, params object[] values)
         {
-            this.Log(ConsoleColor.White, message, values);
+            Log(ConsoleColor.White, message, values);
         }
 
         public virtual void Warn(string message, params object[] values)
         {
-            this.Log(ConsoleColor.Yellow, message, values);
+            Log(ConsoleColor.Yellow, message, values);
         }
 
         public virtual void Error(string message, params object[] values)
         {
-            this.Log(ConsoleColor.DarkRed, message, values);
+            Log(ConsoleColor.DarkRed, message, values);
         }
 
         public virtual void Fatal(string message, params object[] values)
         {
-            this.Log(ConsoleColor.Red, message, values);
+            Log(ConsoleColor.Red, message, values);
         }
 
         private void Log(ConsoleColor color, string message, params object[] values)

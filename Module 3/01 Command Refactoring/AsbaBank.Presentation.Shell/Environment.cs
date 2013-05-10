@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using AsbaBank.Infrastructure;
-using AsbaBank.Presentation.Shell.Commands;
-using AsbaBank.Presentation.Shell.Commands.AddAccount;
+﻿using AsbaBank.Infrastructure;
 
 namespace AsbaBank.Presentation.Shell
 {
@@ -9,41 +6,23 @@ namespace AsbaBank.Presentation.Shell
     {
         private static readonly InMemoryDataStore DataStore;
         public static readonly ILog Logger;
-        private static readonly Dictionary<string, IShellCommand> ShellCommands; 
-        
+        public static readonly CommandFactory.CommandFactory CommandFactory;
+
         static Environment()
         {
             DataStore = new InMemoryDataStore();
             Logger = new ConsoleWindowLogger();
-            ShellCommands = new Dictionary<string, IShellCommand>();
-            RegisterCommands();
+            CommandFactory = new CommandFactory.CommandFactory();
+        }
+
+        public static void ExecuteCommand(string[] split)
+        {
+            CommandFactory.ExecuteCommand(split);
         }
 
         public static IUnitOfWork GetUnitOfWork()
         {
             return new InMemoryUnitOfWork(DataStore);
         }
-
-        public static IEnumerable<IShellCommand> GetShellCommands()
-        {
-            return ShellCommands.Values;
-        }
-
-        public static IShellCommand GetShellCommand(string key)
-        {
-            return ShellCommands[key];
-        }
-
-        private static void RegisterCommands()
-        {
-            RegsiterCommand(new RegisterClientShell());
-            RegsiterCommand(new AddAccountByClientIdShell()); 
-        }
-
-        private static void RegsiterCommand(IShellCommand command)
-        {
-            ShellCommands.Add(command.Key, command);
-        }
-
     }
 }

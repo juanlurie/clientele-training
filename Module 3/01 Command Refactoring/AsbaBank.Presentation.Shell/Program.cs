@@ -4,14 +4,14 @@ using System.Linq;
 
 namespace AsbaBank.Presentation.Shell
 {
-    class Program
+    internal class Program
     {
-        static void Main()
+        private static void Main()
         {
             Console.WindowHeight = 40;
             Console.WindowWidth = 120;
 
-            Stack history = new Stack();
+            var history = new Stack();
 
             PrintHelp();
 
@@ -26,8 +26,11 @@ namespace AsbaBank.Presentation.Shell
                     {
                         continue;
                     }
+                    if (line.ToLower() == "exit")
+                        return;
+
                     Console.WriteLine();
-                    var split = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] split = line.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
                     history.Push(split);
                     TryHandleRequest(split);
 
@@ -35,7 +38,7 @@ namespace AsbaBank.Presentation.Shell
                 }
                 else if (myKey.Key == ConsoleKey.Tab)
                 {
-                    var command = Environment.GetShellCommands().FirstOrDefault(x => x.Key.ToLower().Contains(line.ToLower()));
+                    IShellCommand command = Environment.CommandFactory.GetShellCommands().FirstOrDefault(x => line != null && x.Key.ToLower().Contains(line.ToLower()));
                     if (command != null)
                     {
                         line = command.Key + " ";
@@ -45,8 +48,8 @@ namespace AsbaBank.Presentation.Shell
                 }
                 else if (myKey.Key == ConsoleKey.UpArrow)
                 {
-                    string[] historyItem = (string[])history.Pop();
-                    var command = historyItem.Aggregate("", (current, item) => current + item + " ");
+                    var historyItem = (string[])history.Pop();
+                    string command = historyItem.Aggregate("", (current, item) => current + item + " ");
                     line = command;
                     Console.Write(command);
                 }
@@ -59,8 +62,10 @@ namespace AsbaBank.Presentation.Shell
                     }
                     else
                     {
-                        if (line.Length > 0)
+                        if (!string.IsNullOrEmpty(line))
+                        {
                             line = line.Remove(line.Length - 1, 1);
+                        }
                         Backspace();
                     }
                 }
@@ -72,7 +77,9 @@ namespace AsbaBank.Presentation.Shell
             int currentLineCursor = Console.CursorTop;
             Console.SetCursorPosition(0, Console.CursorTop);
             for (int i = 0; i < Console.WindowWidth; i++)
+            {
                 Console.Write(" ");
+            }
             Console.SetCursorPosition(0, currentLineCursor);
         }
 
@@ -101,10 +108,7 @@ namespace AsbaBank.Presentation.Shell
 
         private static void HandleRequest(string[] split)
         {
-            IShellCommand shellCommand = Environment.GetShellCommand(split.First());
-            ICommand command = shellCommand.Build(split.Skip(1).ToArray());
-
-            command.Execute();
+            Environment.ExecuteCommand(split);
         }
 
         private static void PrintHelp()
@@ -114,7 +118,7 @@ namespace AsbaBank.Presentation.Shell
 
             Console.WriteLine("Available commands:");
 
-            foreach (var shellCommand in Environment.GetShellCommands())
+            foreach (IShellCommand shellCommand in Environment.CommandFactory.GetShellCommands())
             {
                 Console.WriteLine(shellCommand.Usage);
             }
