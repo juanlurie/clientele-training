@@ -9,19 +9,6 @@ namespace AsbaBank.Domain.Models
     [DataContract]
     public class Account
     {
-        [Key, DataMember] 
-        public int Id { get; protected set; }
-        [DataMember] 
-        public int ClientId { get; protected set; }
-        [DataMember] 
-        public string AccountNumber { get; protected set; }
-        [DataMember] 
-        public bool Closed { get; protected set; }
-        [DataMember]
-        public ICollection<Transaction> Ledger { get; set; }  
-        [DataMember]
-        public ICollection<BankCard> BankCards { get; set; }  
-
         protected Account()
         {
             //here for the deserializer
@@ -40,6 +27,25 @@ namespace AsbaBank.Domain.Models
             BankCards = new HashSet<BankCard>();
         }
 
+        [Key]
+        [DataMember]
+        public int Id { get; protected set; }
+
+        [DataMember]
+        public int ClientId { get; protected set; }
+
+        [DataMember]
+        public string AccountNumber { get; protected set; }
+
+        [DataMember]
+        public bool Closed { get; protected set; }
+
+        [DataMember]
+        public ICollection<Transaction> Ledger { get; set; }
+
+        [DataMember]
+        public ICollection<BankCard> BankCards { get; set; }
+
         public static Account OpenAccount(int clientId)
         {
             return new Account(clientId);
@@ -47,7 +53,7 @@ namespace AsbaBank.Domain.Models
 
         private static string GenerateAccountNumber()
         {
-            var ticks = DateTime.Now.Ticks.ToString();
+            string ticks = DateTime.Now.Ticks.ToString();
             return ticks.Substring(ticks.Length - 10);
         }
 
@@ -58,7 +64,7 @@ namespace AsbaBank.Domain.Models
                 throw new ValidationException("The account is closed");
             }
 
-            var debitAmount = Math.Abs(amount); //make sure the number is positive
+            decimal debitAmount = Math.Abs(amount); //make sure the number is positive
 
             if (GetAccountBalance() < debitAmount)
             {
@@ -81,7 +87,7 @@ namespace AsbaBank.Domain.Models
         public decimal GetAccountBalance()
         {
             return Ledger.Sum(ledger => ledger.Amount);
-        }        
+        }
 
         public void Close(int accountId)
         {

@@ -43,8 +43,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandFactory\CommandFactory.cs" />
-    <Compile Include="Commands\AddAccount\AddAccount.cs" />
-    <Compile Include="Commands\AddAccount\AddAccountShell.cs" />
+    <Compile Include="Commands\Account\AddAccount\AddAccount.cs" />
+    <Compile Include="Commands\Account\AddAccount\AddAccountShell.cs" />
+    <Compile Include="Commands\Account\DebitAccount\DebitAccount.cs" />
+    <Compile Include="Commands\Account\DebitAccount\DebitAccountShell.cs" />
+    <Compile Include="Commands\Account\IssueBankCard\IssueBankCard.cs" />
+    <Compile Include="Commands\Account\IssueBankCard\IssueBankCardShell.cs" />
+    <Compile Include="Commands\Account\StopBankCard\StopBankCard.cs" />
+    <Compile Include="Commands\Account\StopBankCard\StopBankCardShell.cs" />
+    <Compile Include="Commands\Account\CloseAccount\CloseAccount.cs" />
+    <Compile Include="Commands\Account\CloseAccount\CloseAccountShell.cs" />
+    <Compile Include="Commands\Account\GetAccountBalance\GetAccountBalance.cs" />
+    <Compile Include="Commands\Account\GetAccountBalance\GetAccountBalanceShell.cs" />
+    <Compile Include="Commands\Account\CreditAccount\CreditAccount.cs" />
+    <Compile Include="Commands\Account\CreditAccount\CreditAccountShell.cs" />
     <Compile Include="Commands\RegisterClient.cs" />
     <Compile Include="Commands\RegisterClientShell.cs" />
     <Compile Include="Environment.cs" />

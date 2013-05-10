@@ -1,7 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AsbaBank.Presentation.Shell.Commands;
-using AsbaBank.Presentation.Shell.Commands.AddAccount;
+using AsbaBank.Presentation.Shell.Commands.Account.AddAccount;
+using AsbaBank.Presentation.Shell.Commands.Account.CloseAccount;
+using AsbaBank.Presentation.Shell.Commands.Account.CreditAccount;
+using AsbaBank.Presentation.Shell.Commands.Account.DebitAccount;
+using AsbaBank.Presentation.Shell.Commands.Account.GetAccountBalance;
+using AsbaBank.Presentation.Shell.Commands.Account.IssueBankCard;
+using AsbaBank.Presentation.Shell.Commands.Account.StopBankCard;
 
 namespace AsbaBank.Presentation.Shell.CommandFactory
 {
@@ -35,7 +41,13 @@ namespace AsbaBank.Presentation.Shell.CommandFactory
         private void RegisterCommands()
         {
             RegsiterCommand(new RegisterClientShell());
-            RegsiterCommand(new AddAccountByClientIdShell());
+            RegsiterCommand(new AddAccountShell());
+            RegsiterCommand(new CloseAccountShell());
+            RegsiterCommand(new CreditAccountShell());
+            RegsiterCommand(new DebitAccountShell());
+            RegsiterCommand(new GetAccountBalanceShell());
+            RegsiterCommand(new IssueBankCardShell());
+            RegsiterCommand(new StopBankCardShell());
         }
 
         private void RegsiterCommand(IShellCommand command)
