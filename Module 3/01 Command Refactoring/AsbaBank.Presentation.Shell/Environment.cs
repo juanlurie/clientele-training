@@ -1,4 +1,5 @@
 ﻿using AsbaBank.Infrastructure;
+using AsbaBank.Presentation.Shell.Factories;
 
 namespace AsbaBank.Presentation.Shell
 {
@@ -6,13 +7,13 @@ namespace AsbaBank.Presentation.Shell
     {
         private static readonly InMemoryDataStore DataStore;
         public static readonly ILog Logger;
-        public static readonly CommandFactory.CommandFactory CommandFactory;
+        public static readonly CommandFactory CommandFactory;
 
         static Environment()
         {
             DataStore = new InMemoryDataStore();
             Logger = new ConsoleWindowLogger();
-            CommandFactory = new CommandFactory.CommandFactory();
+            CommandFactory = new CommandFactory();
         }
 
         public static void ExecuteCommand(string[] split)

@@ -42,7 +42,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandFactory\CommandFactory.cs" />
+    <Compile Include="Commands\Input\BackspaceRule.cs" />
+    <Compile Include="Commands\Input\UpRule.cs" />
+    <Compile Include="Commands\Input\DownRule.cs" />
+    <Compile Include="Commands\Input\TabRule.cs" />
+    <Compile Include="Commands\Input\TextInputRule.cs" />
+    <Compile Include="Commands\Input\InputRule.cs" />
+    <Compile Include="Commands\Input\EnterRule.cs" />
+    <Compile Include="IInputCommand.cs" />
+    <Compile Include="Factories\CommandFactory.cs" />
     <Compile Include="Commands\Account\AddAccount\AddAccount.cs" />
     <Compile Include="Commands\Account\AddAccount\AddAccountShell.cs" />
     <Compile Include="Commands\Account\DebitAccount\DebitAccount.cs" />
@@ -57,8 +65,8 @@
     <Compile Include="Commands\Account\GetAccountBalance\GetAccountBalanceShell.cs" />
     <Compile Include="Commands\Account\CreditAccount\CreditAccount.cs" />
     <Compile Include="Commands\Account\CreditAccount\CreditAccountShell.cs" />
-    <Compile Include="Commands\RegisterClient.cs" />
-    <Compile Include="Commands\RegisterClientShell.cs" />
+    <Compile Include="Commands\ClientCommands\RegisterClient.cs" />
+    <Compile Include="Commands\ClientCommands\RegisterClientShell.cs" />
     <Compile Include="Environment.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="IShellCommand.cs" />
