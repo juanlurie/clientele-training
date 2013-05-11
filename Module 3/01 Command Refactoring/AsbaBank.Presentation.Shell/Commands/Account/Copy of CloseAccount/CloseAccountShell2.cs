@@ -3,10 +3,10 @@ using AsbaBank.Presentation.Shell.Interfaces;
 
 namespace AsbaBank.Presentation.Shell.Commands.Account.CloseAccount
 {
-    public class CloseAccountShell : IShellCommand
+    public class CloseAccountShell2 : IShellCommand
     {
         public string Usage { get { return String.Format("{0} <Client Id> <Account Number>", Key); } }
-        public string Key { get { return "CloseAccount"; } }
+        public string Key { get { return "CloseAccount2"; } }
 
         public ICommand Build(string[] args)
         {

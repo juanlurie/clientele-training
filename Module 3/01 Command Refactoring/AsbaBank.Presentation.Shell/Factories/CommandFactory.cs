@@ -1,19 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AsbaBank.Presentation.Shell.Commands.Account.AddAccount;
-using AsbaBank.Presentation.Shell.Commands.Account.CloseAccount;
-using AsbaBank.Presentation.Shell.Commands.Account.CreditAccount;
-using AsbaBank.Presentation.Shell.Commands.Account.DebitAccount;
-using AsbaBank.Presentation.Shell.Commands.Account.GetAccountBalance;
-using AsbaBank.Presentation.Shell.Commands.Account.IssueBankCard;
-using AsbaBank.Presentation.Shell.Commands.Account.StopBankCard;
-using AsbaBank.Presentation.Shell.Commands.ClientCommands;
+using AsbaBank.Presentation.Shell.Interfaces;
+using AsbaBank.Presentation.Shell.Registrar;
 
 namespace AsbaBank.Presentation.Shell.Factories
 {
     public class CommandFactory
     {
-        private readonly Dictionary<string, IShellCommand> shellCommands;
+        private Dictionary<string, IShellCommand> shellCommands;
         public CommandFactory()
         {
             shellCommands = new Dictionary<string, IShellCommand>();
@@ -40,19 +34,7 @@ namespace AsbaBank.Presentation.Shell.Factories
 
         private void RegisterCommands()
         {
-            RegsiterCommand(new RegisterClientShell());
-            RegsiterCommand(new AddAccountShell());
-            RegsiterCommand(new CloseAccountShell());
-            RegsiterCommand(new CreditAccountShell());
-            RegsiterCommand(new DebitAccountShell());
-            RegsiterCommand(new GetAccountBalanceShell());
-            RegsiterCommand(new IssueBankCardShell());
-            RegsiterCommand(new StopBankCardShell());
-        }
-
-        private void RegsiterCommand(IShellCommand command)
-        {
-            shellCommands.Add(command.Key, command);
+            shellCommands = ShellCommandRegistrar.Commands;
         }
     }
 }

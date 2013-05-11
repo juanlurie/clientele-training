@@ -15,8 +15,7 @@ namespace AsbaBank.Presentation.Shell
 
             Action<string[]> executeDelegate = TryHandleRequest;
             var commandList = Environment.CommandFactory.GetShellCommands().Select(item => item.Key).ToList();
-            new InputRuleFactory(executeDelegate, commandList);
-
+            BindHelpers.Input(executeDelegate, commandList);
         }
 
         private static void PrintHelp()

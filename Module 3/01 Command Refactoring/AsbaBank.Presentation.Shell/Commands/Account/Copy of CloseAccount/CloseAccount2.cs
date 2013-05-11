@@ -2,22 +2,22 @@
 using AsbaBank.Domain.Models;
 using AsbaBank.Presentation.Shell.Interfaces;
 
-namespace AsbaBank.Presentation.Shell.Commands.Account.DebitAccount
+namespace AsbaBank.Presentation.Shell.Commands.Account.CloseAccount
 {
-    public class DebitAccount : ICommand
+    public class CloseAccount2 : ICommand
     {
-        private readonly int clientId;
-        private readonly decimal amount;
+        private readonly int id;
+        private readonly int accountNumber;
 
-        public DebitAccount(int clientId,decimal amount)
+        public CloseAccount2(int id,int accountNumber)
         {
-            this.clientId = clientId;
-            this.amount = amount;
-            if (clientId <= 0)
+            if (id <= 0)
                 throw new ArgumentException("Please provide a valid client id.");
+            if (accountNumber <= 0)
+                throw new ArgumentException("Please provide a valid account number.");
 
-            if (amount <= 0)
-                throw new ArgumentException("Please provide an amount larger than 0.");
+            this.id = id;
+            this.accountNumber = accountNumber;
         }
 
         public void Execute()
@@ -28,15 +28,16 @@ namespace AsbaBank.Presentation.Shell.Commands.Account.DebitAccount
 
             try
             {
-                var client = clientRepository.Get(clientId);
+                var client = clientRepository.Get(id);
                 if (client == null)
                     throw new ArgumentException("Client Id does not exist. Please select another Client Id or register new client");
 
-                var account = accountRepository.Get(clientId);
-                account.Debit(amount);
+                var account = accountRepository.Get(id);
+                account.Close(accountNumber);
+                accountRepository.Add(account);
                 unitOfWork.Commit();
 
-                Environment.Logger.Verbose("Debited account {0} with {1}", account.AccountNumber, amount);
+                Environment.Logger.Verbose("Closed account {0} for {1} {2}", account.AccountNumber, client.Name, client.Surname);
             }
             catch
             {
@@ -46,5 +47,3 @@ namespace AsbaBank.Presentation.Shell.Commands.Account.DebitAccount
         }
     }
 }
-
-

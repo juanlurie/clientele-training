@@ -1,4 +1,4 @@
-﻿namespace AsbaBank.Presentation.Shell
+﻿namespace AsbaBank.Presentation.Shell.Interfaces
 {
     public interface IShellCommand
     {
