@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ConsoleHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\ConsoleHelper.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -42,13 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\Input\BackspaceRule.cs" />
-    <Compile Include="Commands\Input\UpRule.cs" />
-    <Compile Include="Commands\Input\DownRule.cs" />
-    <Compile Include="Commands\Input\TabRule.cs" />
-    <Compile Include="Commands\Input\TextInputRule.cs" />
-    <Compile Include="Commands\Input\InputRule.cs" />
-    <Compile Include="Commands\Input\EnterRule.cs" />
     <Compile Include="IInputCommand.cs" />
     <Compile Include="Factories\CommandFactory.cs" />
     <Compile Include="Commands\Account\AddAccount\AddAccount.cs" />
@@ -85,6 +82,9 @@
       <Project>{88336594-86D7-438D-983F-7828F2765E41}</Project>
       <Name>AsbaBank.Infrastructure</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ConsoleHelper.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,5 +1,6 @@
 ﻿using System;
-using AsbaBank.Presentation.Shell.Commands.Input;
+using System.Linq;
+using ConsoleHelper.Input;
 
 namespace AsbaBank.Presentation.Shell
 {
@@ -7,19 +8,15 @@ namespace AsbaBank.Presentation.Shell
     {
         private static void Main()
         {
-            InputRuleFactory ruleFactory = new InputRuleFactory();
             Console.WindowHeight = 40;
             Console.WindowWidth = 120;
 
             PrintHelp();
 
-            while (true)
-            {
-                Console.ForegroundColor = ConsoleColor.Gray;
-                var key = Console.ReadKey(true);
-                ruleFactory.ConsoleKeyInfo = key;
-                ruleFactory.Execute();
-            }
+            Action<string[]> executeDelegate = TryHandleRequest;
+            var commandList = Environment.CommandFactory.GetShellCommands().Select(item => item.Key).ToList();
+            new InputRuleFactory(executeDelegate, commandList);
+
         }
 
         private static void PrintHelp()
@@ -41,5 +38,24 @@ namespace AsbaBank.Presentation.Shell
             Console.WriteLine();
             Console.WriteLine();
         }
+
+        public static void TryHandleRequest(string[] split)
+        {
+            try
+            {
+                HandleRequest(split);
+            }
+            catch (Exception ex)
+            {
+                Environment.Logger.Fatal(ex.Message);
+            }
+        }
+
+        public static void HandleRequest(string[] split)
+        {
+            Environment.ExecuteCommand(split);
+        }
     }
+
+
 }

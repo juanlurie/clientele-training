@@ -1,5 +1,5 @@
 ﻿using System;
-using AsbaBank.Presentation.Shell.Commands.Input;
+using ConsoleHelper.Input;
 
 namespace AsbaBank.Presentation.Shell
 {
