@@ -3,6 +3,8 @@ using AsbaBank.ApplicationService;
 using AsbaBank.Core;
 using AsbaBank.Infrastructure;
 using AsbaBank.Infrastructure.CommandScripts;
+using AsbaBank.Infrastructure.DataStoreSelector;
+using AsbaBank.Infrastructure.UnitOfWork;
 using AsbaBank.Presentation.Shell.ShellCommands;
 using AsbaBank.Presentation.Shell.SystemCommands;
 
@@ -10,7 +12,6 @@ namespace AsbaBank.Presentation.Shell
 {
     public static class Environment
     {
-        private static readonly IDataStore DataStore;
         public static ILog Logger;
         private static readonly Dictionary<string, ICommandBuilder> CommandBuilders;
         private static readonly Dictionary<string, ISystemCommand> SystemCommands;
@@ -24,14 +25,11 @@ namespace AsbaBank.Presentation.Shell
             ScriptRecorder = new ScriptRecorder();
             RegsiterSystemCommands();
             RegsiterCommandBuilders();
-
-            DataStore = new DataStoreSelector().GetDataStoreFromAppConfiguration();
-            GetDataStoreType();
         }
 
         public static string GetDataStoreType()
         {
-            return "You are using a " + DataStore.DataStoreName;
+            return "You are using a " + DataStoreSelector.DataStore.DataStoreName;
         }
 
         public static IEnumerable<ICommandBuilder> GetShellCommands()
@@ -77,8 +75,8 @@ namespace AsbaBank.Presentation.Shell
         public static IPublishCommands GetCommandPublisher()
         {
             var commandPublisher = new LocalCommandPublisher();
-            var unitOfWork = new UnitOfWork((dynamic) DataStore);
 
+            var unitOfWork = new UnitOfWork((dynamic)DataStoreSelector.DataStore);
             commandPublisher.Subscribe(new ClientService(unitOfWork, Logger));
 
             return commandPublisher;

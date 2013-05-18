@@ -16,7 +16,7 @@ namespace AsbaBank.Presentation.Shell
             PrintHelp();
 
             Action<string[]> executeDelegate = TryHandleRequest;
-            
+
             var commandList = Environment.GetShellCommands().Select(item => item.Key).ToList();
             commandList.AddRange(Environment.GetSystemCommands().Select(item => item.Key).ToList());
 

@@ -1,4 +1,4 @@
-﻿using AsbaBank.Infrastructure.InMemoryUnitOfWork;
+﻿using AsbaBank.Infrastructure.InMemoryInfrastructure;
 
 namespace AsbaBank.Infrastructure.CommandScripts
 {
