@@ -3,11 +3,11 @@ using AsbaBank.Core;
 
 namespace AsbaBank.Infrastructure.SqlInfrastructure
 {
-    public class SqlUnitOfWork : IUnitOfWork
+    public class EfUnitOfWork : IUnitOfWork
     {
         private readonly DbContext context;
 
-        public SqlUnitOfWork(DbContext context)
+        public EfUnitOfWork(DbContext context)
         {
             this.context = context;
         }
@@ -19,12 +19,11 @@ namespace AsbaBank.Infrastructure.SqlInfrastructure
 
         public void Rollback()
         {
-            //??if save fails then all changes reverted anyway?
         }
 
         public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class
         {
-            return new SqlRepository<TEntity>(context);
+            return new EfRepository<TEntity>(context);
         }
     }
 }

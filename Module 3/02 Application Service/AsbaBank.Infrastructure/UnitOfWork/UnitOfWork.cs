@@ -11,7 +11,7 @@ namespace AsbaBank.Infrastructure.UnitOfWork
 
         public UnitOfWork(DbContext context)
         {
-            unitOfWork = new SqlUnitOfWork(context);
+            unitOfWork = new EfUnitOfWork(context);
         }
 
         public UnitOfWork(InMemoryDataStore context)

@@ -65,8 +65,8 @@
     <Compile Include="CommandScripts\ScriptPlayer.cs" />
     <Compile Include="CommandScripts\ScriptRecorder.cs" />
     <Compile Include="DataContext\AbsaBankContext.cs" />
-    <Compile Include="SqlInfrastructure\SqlRepository.cs" />
-    <Compile Include="SqlInfrastructure\SqlUnitOfWork.cs" />
+    <Compile Include="SqlInfrastructure\EfRepository.cs" />
+    <Compile Include="SqlInfrastructure\EfUnitOfWork.cs" />
     <Compile Include="UnitOfWork\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>

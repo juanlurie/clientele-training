@@ -11,22 +11,22 @@ namespace AsbaBank.Domain.Models
     {
         [Key]
         [DataMember]
-        public int Id { get; protected set; }
+        public virtual int Id { get; protected set; }
 
         [DataMember]
-        public string Name { get; protected set; }
+        public virtual string Name { get; protected set; }
 
         [DataMember]
-        public string Surname { get; protected set; }
+        public virtual string Surname { get; protected set; }
 
         [DataMember]
-        public string PhoneNumber { get; protected set; }
+        public virtual string PhoneNumber { get; protected set; }
 
         [DataMember]
         public virtual Address Address { get; protected set; }
 
         [DataMember]
-        public int AddressId { get; protected set; }
+        public virtual int AddressId { get; protected set; }
 
         public override string ToString()
         {

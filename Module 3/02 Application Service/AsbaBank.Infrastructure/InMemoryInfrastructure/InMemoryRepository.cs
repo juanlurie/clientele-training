@@ -46,7 +46,6 @@ namespace AsbaBank.Infrastructure.InMemoryInfrastructure
         {
             return dataStore
                 .AsQueryable<TEntity>()
-                .AsQueryable()
                 .SingleOrDefault(WithMatchingId(id));
         }
 
