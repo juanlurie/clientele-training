@@ -11,7 +11,7 @@ namespace AsbaBank.Domain.Models
     {
         [Key]
         [DataMember]
-        public virtual int Id { get; protected set; }
+        public virtual Guid Id { get; protected set; }
 
         [DataMember]
         public virtual string Name { get; protected set; }

@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsbaBank.ApplicationService
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsbaBank.Core", "AsbaBank.Core\AsbaBank.Core.csproj", "{CBF7366C-BA37-4E0A-A523-D948A9640D5B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleHelper", "ConsoleHelper\ConsoleHelper.csproj", "{5E5036E7-5F84-4E53-86B6-EEA88B068BA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{CBF7366C-BA37-4E0A-A523-D948A9640D5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBF7366C-BA37-4E0A-A523-D948A9640D5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBF7366C-BA37-4E0A-A523-D948A9640D5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E5036E7-5F84-4E53-86B6-EEA88B068BA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E5036E7-5F84-4E53-86B6-EEA88B068BA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E5036E7-5F84-4E53-86B6-EEA88B068BA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E5036E7-5F84-4E53-86B6-EEA88B068BA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
