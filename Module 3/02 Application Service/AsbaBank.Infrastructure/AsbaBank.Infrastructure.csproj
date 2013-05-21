@@ -54,7 +54,7 @@
     <Compile Include="ConsoleWindowLogger.cs" />
     <Compile Include="DataStoreSelector\AbstractDatastoreFactory.cs" />
     <Compile Include="DataStoreSelector\DatastoreFactory.cs" />
-    <Compile Include="DataStoreSelector\DataStoreSelector.cs" />
+    <Compile Include="DataStoreSelector\ContextFactory.cs" />
     <Compile Include="InMemoryInfrastructure\InMemoryDataStore.cs" />
     <Compile Include="InMemoryInfrastructure\InMemoryRepository.cs" />
     <Compile Include="InMemoryInfrastructure\InMemoryUnitOfWork.cs" />
@@ -65,7 +65,7 @@
     <Compile Include="CommandScripts\ScriptPlayer.cs" />
     <Compile Include="CommandScripts\ScriptRecorder.cs" />
     <Compile Include="DataContext\AbsaBankContext.cs" />
-    <Compile Include="SqlInfrastructure\EfRepository.cs" />
+    <Compile Include="SqlInfrastructure\EntityFrameworkRepository.cs" />
     <Compile Include="SqlInfrastructure\EfUnitOfWork.cs" />
     <Compile Include="UnitOfWork\UnitOfWork.cs" />
   </ItemGroup>

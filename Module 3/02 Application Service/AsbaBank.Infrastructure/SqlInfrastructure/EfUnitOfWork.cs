@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using AsbaBank.Core;
+using AsbaBank.Infrastructure.DataStoreSelector;
 
 namespace AsbaBank.Infrastructure.SqlInfrastructure
 {
@@ -20,12 +21,12 @@ namespace AsbaBank.Infrastructure.SqlInfrastructure
         public void Rollback()
         {
             context.Dispose();
-            context = (DbContext)DataStoreSelector.DataStoreSelector.DataStore;
+            context = ContextFactory.DataStore as DbContext;
         }
 
         public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class
         {
-            return new EfRepository<TEntity>(context);
+            return new EntityFrameworkRepository<TEntity>(context);
         }
     }
 }
