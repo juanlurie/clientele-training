@@ -12,7 +12,7 @@ namespace AsbaBank.Infrastructure.DataStoreSelector
             GetDataStoreFromAppConfiguration();
         }
 
-        public static IDataStore DataStore
+        public static IDataStore Context
         {
             get
             {
@@ -31,15 +31,15 @@ namespace AsbaBank.Infrastructure.DataStoreSelector
             {
                 case "sql":
                     {
-                        DataStore = datastoreFactory.AbsaBankContext(); break;
+                        Context = datastoreFactory.AbsaBankContext(); break;
                     }
                 case "inmemory":
                     {
-                        DataStore = datastoreFactory.InMemoryDataStore(); break;
+                        Context = datastoreFactory.InMemoryDataStore(); break;
                     }
                 default:
                     {
-                        DataStore = datastoreFactory.InMemoryDataStore();
+                        Context = datastoreFactory.InMemoryDataStore();
                         break;
                     }
             }

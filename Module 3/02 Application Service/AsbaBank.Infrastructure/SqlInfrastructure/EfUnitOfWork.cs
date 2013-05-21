@@ -21,7 +21,7 @@ namespace AsbaBank.Infrastructure.SqlInfrastructure
         public void Rollback()
         {
             context.Dispose();
-            context = ContextFactory.DataStore as DbContext;
+            context = ContextFactory.Context as DbContext;
         }
 
         public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class

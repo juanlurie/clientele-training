@@ -29,7 +29,7 @@ namespace AsbaBank.Presentation.Shell
 
         public static string GetDataStoreType()
         {
-            return "You are using a " + ContextFactory.DataStore.DataStoreName;
+            return "You are using a " + ContextFactory.Context.DataStoreName;
         }
 
         public static IEnumerable<ICommandBuilder> GetShellCommands()
@@ -76,7 +76,7 @@ namespace AsbaBank.Presentation.Shell
         {
             var commandPublisher = new LocalCommandPublisher();
 
-            var unitOfWork = new UnitOfWork((dynamic)ContextFactory.DataStore);
+            var unitOfWork = new UnitOfWork((dynamic)ContextFactory.Context);
             commandPublisher.Subscribe(new ClientService(unitOfWork, Logger));
 
             return commandPublisher;
