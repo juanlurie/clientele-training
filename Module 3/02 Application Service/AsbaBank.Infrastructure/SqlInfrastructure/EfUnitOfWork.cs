@@ -5,7 +5,7 @@ namespace AsbaBank.Infrastructure.SqlInfrastructure
 {
     public class EfUnitOfWork : IUnitOfWork
     {
-        private readonly DbContext context;
+        private DbContext context;
 
         public EfUnitOfWork(DbContext context)
         {
@@ -19,6 +19,8 @@ namespace AsbaBank.Infrastructure.SqlInfrastructure
 
         public void Rollback()
         {
+            context.Dispose();
+            context = (DbContext)DataStoreSelector.DataStoreSelector.DataStore;
         }
 
         public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class

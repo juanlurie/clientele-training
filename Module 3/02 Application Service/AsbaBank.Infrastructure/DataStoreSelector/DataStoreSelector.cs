@@ -5,12 +5,23 @@ namespace AsbaBank.Infrastructure.DataStoreSelector
 {
     public static class DataStoreSelector
     {
+        private static IDataStore dataStore;
+
         static DataStoreSelector()
         {
             GetDataStoreFromAppConfiguration();
         }
 
-        public static IDataStore DataStore { get; set; }
+        public static IDataStore DataStore
+        {
+            get
+            {
+                if(dataStore.IsDisposed)
+                    GetDataStoreFromAppConfiguration();
+                return dataStore;
+            }
+            set { dataStore = value; }
+        }
 
         public static void GetDataStoreFromAppConfiguration()
         {

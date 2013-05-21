@@ -90,5 +90,11 @@ namespace AsbaBank.Infrastructure.InMemoryInfrastructure
         }
 
         public string DataStoreName { get { return "In Memory Data Store"; } }
+        public bool IsDisposed { get; set; }
+
+        public void Dispose()
+        {
+            
+        }
     }
 }

@@ -25,5 +25,12 @@ namespace AsbaBank.Infrastructure.DataContext
         // ReSharper restore UnusedMember.Local
 
         public string DataStoreName { get { return "Sql Datastore"; } }
+        public bool IsDisposed { get; set; }
+
+        protected override void Dispose(bool disposing)
+        {
+            IsDisposed = true;
+            base.Dispose(disposing);
+        }
     }
 }
