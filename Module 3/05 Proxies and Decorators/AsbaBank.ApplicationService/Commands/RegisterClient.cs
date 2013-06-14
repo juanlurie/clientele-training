@@ -7,6 +7,7 @@ namespace AsbaBank.ApplicationService.Commands
 {
     [DataContract]
     [Authorize("Administrator")]
+    [RetryCommand(Delay = 5,RetryCount = 3)]
     public class RegisterClient : ICommand
     {
         [DataMember]

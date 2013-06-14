@@ -39,9 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthorizeAttribute.cs" />
+    <Compile Include="Commands\AuthorizeAttribute.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\IHandleCommand.cs" />
+    <Compile Include="Commands\RetryCommandAttribute.cs" />
     <Compile Include="ICurrentUserSession.cs" />
     <Compile Include="ILog.cs" />
     <Compile Include="IPublishCommands.cs" />

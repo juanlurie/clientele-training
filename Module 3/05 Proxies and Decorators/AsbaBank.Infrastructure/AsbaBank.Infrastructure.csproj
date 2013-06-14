@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="CommandPublisherLoggerDecorator.cs" />
     <Compile Include="CommandPublisherProxy.cs" />
+    <Compile Include="CommandPublisherRetryDecorator.cs" />
     <Compile Include="ConsoleWindowLogger.cs" />
     <Compile Include="InMemory\InMemoryDataStore.cs" />
     <Compile Include="InMemory\InMemoryUnitOfWork.cs" />

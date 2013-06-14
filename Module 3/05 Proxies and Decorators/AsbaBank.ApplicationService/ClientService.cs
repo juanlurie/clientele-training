@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AsbaBank.ApplicationService.Commands;
 using AsbaBank.Core;
 using AsbaBank.Core.Commands;
@@ -21,6 +22,7 @@ namespace AsbaBank.ApplicationService
 
         public void Execute(RegisterClient command)
         {
+            throw new Exception("Error !!!");
             IRepository<Client> clientRepository = unitOfWork.GetRepository<Client>();
 
             try
