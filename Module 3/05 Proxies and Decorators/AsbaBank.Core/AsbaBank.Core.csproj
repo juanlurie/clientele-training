@@ -42,6 +42,7 @@
     <Compile Include="AuthorizeAttribute.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\IHandleCommand.cs" />
+    <Compile Include="ICurrentUserSession.cs" />
     <Compile Include="ILog.cs" />
     <Compile Include="IPublishCommands.cs" />
     <Compile Include="IRepository.cs" />

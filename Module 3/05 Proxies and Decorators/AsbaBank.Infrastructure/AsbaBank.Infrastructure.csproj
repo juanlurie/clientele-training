@@ -63,6 +63,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AsbaBank.ApplicationService\AsbaBank.ApplicationService.csproj">
+      <Project>{AF5D6108-B824-4A29-9C83-259A8BC9B452}</Project>
+      <Name>AsbaBank.ApplicationService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AsbaBank.Core\AsbaBank.Core.csproj">
       <Project>{CBF7366C-BA37-4E0A-A523-D948A9640D5B}</Project>
       <Name>AsbaBank.Core</Name>

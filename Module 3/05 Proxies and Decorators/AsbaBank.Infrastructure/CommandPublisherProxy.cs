@@ -30,7 +30,7 @@ namespace AsbaBank.Infrastructure
             var authorizeAttribute = Attribute.GetCustomAttributes(command.GetType())
                .FirstOrDefault(a => a is AuthorizeAttribute) as AuthorizeAttribute;
 
-            if (authorizeAttribute == null)
+            if (authorizeAttribute == null || authorizeAttribute.Roles.Any())
             {
                 return;
             }
