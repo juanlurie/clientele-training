@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace AsbaBank.Core.Commands
 {
@@ -7,5 +8,6 @@ namespace AsbaBank.Core.Commands
     {
         public int RetryCount { get; set; }
         public int Delay { get; set; }
+        public Type[] HaltOnExceptionList { get; set; }
     }
 }

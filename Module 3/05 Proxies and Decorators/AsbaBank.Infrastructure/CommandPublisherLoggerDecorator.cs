@@ -9,26 +9,42 @@ namespace AsbaBank.Infrastructure
     public class CommandPublisherLoggerDecorator : IPublishCommands
     {
         private readonly IPublishCommands commandPublisher;
-        private ConsoleWindowLogger logger;
+        private readonly ILog logger;
 
-        public CommandPublisherLoggerDecorator(IPublishCommands commandPublisher)
+        public CommandPublisherLoggerDecorator(IPublishCommands commandPublisher, ILog logger)
         {
-            logger = new ConsoleWindowLogger();
             this.commandPublisher = commandPublisher;
+            this.logger = logger;
         }
 
         public void Publish(ICommand command)
         {
-            commandPublisher.Publish(command);
+            try
+            {
+                commandPublisher.Publish(command);
+            }
+            catch(Exception ex)
+            {
+                logger.Error(ex.Message);
+                throw;
+            }
         }
 
         public void Subscribe(object handler)
         {
-            commandPublisher.Subscribe(handler);
-
-            foreach (var type in GetCommandHandlerTypes(handler))
+            try
             {
-                logger.Verbose("Subscribed handler for command {0}", type.GenericTypeArguments.First().Name);
+                commandPublisher.Subscribe(handler);
+
+                foreach (var type in GetCommandHandlerTypes(handler))
+                {
+                    logger.Verbose("Subscribed handler for command {0}", type.GenericTypeArguments.First().Name);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Message);
+                throw;
             }
         }
 

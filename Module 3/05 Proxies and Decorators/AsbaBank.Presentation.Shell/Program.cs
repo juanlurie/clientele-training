@@ -48,7 +48,7 @@ namespace AsbaBank.Presentation.Shell
             }
             catch (Exception ex)
             {
-                Environment.Logger.Fatal(ex.Message);
+                
             }
         }
 

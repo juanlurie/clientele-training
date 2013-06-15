@@ -13,7 +13,6 @@ namespace AsbaBank.Presentation.Shell
 {
     public static class Environment
     {
-        public static readonly ILog Logger;
         private static readonly Dictionary<string, ICommandBuilder> CommandBuilders;
         private static readonly Dictionary<string, ISystemCommand> SystemCommands;
         private static readonly ScriptRecorder ScriptRecorder;
@@ -21,7 +20,6 @@ namespace AsbaBank.Presentation.Shell
 
         static Environment()
         {
-            Logger = new ConsoleWindowLogger();
             CommandBuilders = new Dictionary<string, ICommandBuilder>();
             SystemCommands = new Dictionary<string, ISystemCommand>();
             ScriptRecorder = new ScriptRecorder();
@@ -73,10 +71,14 @@ namespace AsbaBank.Presentation.Shell
 
         public static IPublishCommands GetCommandPublisher()
         {
-            var commandPublisher = new CommandPublisherRetryDecorator(new CommandPublisherLoggerDecorator(new CommandPublisherProxy()));
+            var proxy = new CommandPublisherProxy();
+            var retryDecorator = new CommandPublisherRetryDecorator(proxy);
+            var log4NetLogger = new CommandPublisherLoggerDecorator(retryDecorator, new Log4NetLogger() );
+            var commandPublisher = new CommandPublisherLoggerDecorator(log4NetLogger, new ConsoleWindowLogger());
+
             var unitOfWork = new EntityFrameworkUnitOfWork(ContextFactory);
 
-            commandPublisher.Subscribe(new ClientService(unitOfWork, Logger));
+            commandPublisher.Subscribe(new ClientService(unitOfWork));
 
             return commandPublisher;
         }

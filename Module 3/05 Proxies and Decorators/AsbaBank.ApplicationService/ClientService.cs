@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using AsbaBank.ApplicationService.Commands;
 using AsbaBank.Core;
@@ -14,7 +15,7 @@ namespace AsbaBank.ApplicationService
         private readonly IUnitOfWork unitOfWork;
         private readonly ILog logger;
 
-        public ClientService(IUnitOfWork unitOfWork, ILog logger)
+        public ClientService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
@@ -22,7 +23,7 @@ namespace AsbaBank.ApplicationService
 
         public void Execute(RegisterClient command)
         {
-            throw new Exception("Error !!!");
+            throw new IOException();
             IRepository<Client> clientRepository = unitOfWork.GetRepository<Client>();
 
             try

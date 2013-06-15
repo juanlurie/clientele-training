@@ -5,6 +5,43 @@ using AsbaBank.Core;
 
 namespace AsbaBank.Infrastructure
 {
+    public class Log4NetLogger : ILog
+    {
+        public Log4NetLogger()
+        {
+        }
+
+        public void Verbose(string message, params object[] values)
+        {
+            
+        }
+
+        public void Debug(string message, params object[] values)
+        {
+            
+        }
+
+        public void Info(string message, params object[] values)
+        {
+            
+        }
+
+        public void Warn(string message, params object[] values)
+        {
+            
+        }
+
+        public void Error(string message, params object[] values)
+        {
+            
+        }
+
+        public void Fatal(string message, params object[] values)
+        {
+            
+        }
+    }
+
     public class ConsoleWindowLogger : ILog
     {
         private const string MessageFormat = "{0}";

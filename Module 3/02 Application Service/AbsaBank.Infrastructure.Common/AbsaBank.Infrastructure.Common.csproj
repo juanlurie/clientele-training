@@ -4,17 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{88336594-86D7-438D-983F-7828F2765E41}</ProjectGuid>
+    <ProjectGuid>{63847A1D-7F8D-41EB-8B42-F8E849F70F4B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AsbaBank.Infrastructure</RootNamespace>
-    <AssemblyName>AsbaBank.Infrastructure</AssemblyName>
+    <RootNamespace>AbsaBank.Infrastructure.Common</RootNamespace>
+    <AssemblyName>AbsaBank.Infrastructure.Common</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -31,47 +32,65 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.5.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.0.0-alpha3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.0-alpha3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Caching" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandPublisherLoggerDecorator.cs" />
-    <Compile Include="CommandPublisherProxy.cs" />
-    <Compile Include="CommandPublisherRetryDecorator.cs" />
-    <Compile Include="ConsoleWindowLogger.cs" />
-    <Compile Include="InMemory\InMemoryDataStore.cs" />
-    <Compile Include="InMemory\InMemoryUnitOfWork.cs" />
-    <Compile Include="JsonSerializer.cs" />
-    <Compile Include="LocalCommandPublisher.cs" />
-    <Compile Include="InMemory\InMemoryRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CommandScripts\ScriptBase.cs" />
-    <Compile Include="CommandScripts\ScriptPlayer.cs" />
-    <Compile Include="CommandScripts\ScriptRecorder.cs" />
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="UnitOfWork\UnitOfWork.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AsbaBank.ApplicationService\AsbaBank.ApplicationService.csproj">
-      <Project>{AF5D6108-B824-4A29-9C83-259A8BC9B452}</Project>
-      <Name>AsbaBank.ApplicationService</Name>
+    <ProjectReference Include="..\AbsaBank.Infrastructure.EntityFramework\AbsaBank.Infrastructure.EntityFramework.csproj">
+      <Project>{34B3CC14-4D88-4256-AEA6-5DFD1954F156}</Project>
+      <Name>AbsaBank.Infrastructure.EntityFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\AsbaBank.Core\AsbaBank.Core.csproj">
       <Project>{CBF7366C-BA37-4E0A-A523-D948A9640D5B}</Project>
       <Name>AsbaBank.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AsbaBank.Infrastructure\AsbaBank.Infrastructure.csproj">
+      <Project>{88336594-86D7-438D-983F-7828F2765E41}</Project>
+      <Name>AsbaBank.Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
