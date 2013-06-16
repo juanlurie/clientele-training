@@ -20,6 +20,8 @@ namespace AsbaBank.Presentation.Shell
 
             PrintHelp();
 
+            Environment.SetCurrentUserRole(UserRole.Administrator);
+
             while (true)
             {
                 Thread.Sleep(300);
@@ -35,7 +37,7 @@ namespace AsbaBank.Presentation.Shell
                 var split = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                 TryHandleRequest(split);
-
+                
                 Console.WriteLine();
             }
         }
@@ -48,7 +50,7 @@ namespace AsbaBank.Presentation.Shell
             }
             catch (Exception ex)
             {
-                
+             Console.WriteLine("Fatal Error :" + ex.Message);   
             }
         }
 

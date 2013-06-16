@@ -47,14 +47,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandPublisherLoggerDecorator.cs" />
-    <Compile Include="CommandPublisherProxy.cs" />
-    <Compile Include="CommandPublisherRetryDecorator.cs" />
-    <Compile Include="ConsoleWindowLogger.cs" />
+    <Compile Include="CommandPublishers\CommandPublisherLoggerDecorator.cs" />
+    <Compile Include="CommandProxy\CommandPublisherProxy.cs" />
+    <Compile Include="CommandPublishers\CommandPublisherRetryDecorator.cs" />
+    <Compile Include="Loggers\ConsoleWindowLogger.cs" />
     <Compile Include="InMemory\InMemoryDataStore.cs" />
     <Compile Include="InMemory\InMemoryUnitOfWork.cs" />
     <Compile Include="JsonSerializer.cs" />
-    <Compile Include="LocalCommandPublisher.cs" />
+    <Compile Include="CommandPublishers\LocalCommandPublisher.cs" />
     <Compile Include="InMemory\InMemoryRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CommandScripts\ScriptBase.cs" />

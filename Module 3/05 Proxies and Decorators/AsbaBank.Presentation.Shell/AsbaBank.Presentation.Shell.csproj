@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CurrentUserSession.cs" />
     <Compile Include="ISystemCommand.cs" />
     <Compile Include="ShellCommands\RegisterClientBuilder.cs" />
     <Compile Include="Environment.cs" />

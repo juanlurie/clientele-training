@@ -1,11 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
+using System.Security.Principal;
 using AsbaBank.ApplicationService;
 using AsbaBank.Core;
+using AsbaBank.Core.Commands;
 using AsbaBank.DataModel;
-using AsbaBank.Infrastructure;
+using AsbaBank.Infrastructure.CommandProxy;
+using AsbaBank.Infrastructure.CommandPublishers;
 using AsbaBank.Infrastructure.CommandScripts;
 using AsbaBank.Infrastructure.EntityFramework;
+using AsbaBank.Infrastructure.Loggers;
 using AsbaBank.Presentation.Shell.ShellCommands;
 using AsbaBank.Presentation.Shell.SystemCommands;
 
@@ -17,6 +21,7 @@ namespace AsbaBank.Presentation.Shell
         private static readonly Dictionary<string, ISystemCommand> SystemCommands;
         private static readonly ScriptRecorder ScriptRecorder;
         private static readonly IContextFactory ContextFactory;
+        private static CurrentUserSession currentUserSession;
 
         static Environment()
         {
@@ -28,6 +33,7 @@ namespace AsbaBank.Presentation.Shell
 
             Database.SetInitializer(new AsbaContextInitializer());
             ContextFactory = new ContextFactory<AsbaContext>("AsbaBank");
+            currentUserSession = new CurrentUserSession(new GenericIdentity(System.Environment.UserDomainName));
         }
 
         public static IEnumerable<ICommandBuilder> GetShellCommands()
@@ -69,12 +75,17 @@ namespace AsbaBank.Presentation.Shell
             CommandBuilders.Add(commandBuilder.Key.ToUpper(), commandBuilder);
         }
 
+        public static void SetCurrentUserRole(params UserRole[] role)
+        {
+            var roles = role;
+            currentUserSession = new CurrentUserSession(new GenericIdentity(System.Environment.UserDomainName), roles);
+        }
+
         public static IPublishCommands GetCommandPublisher()
         {
-            var proxy = new CommandPublisherProxy();
+            var proxy = new CommandPublisherProxy(currentUserSession);
             var retryDecorator = new CommandPublisherRetryDecorator(proxy);
-            var log4NetLogger = new CommandPublisherLoggerDecorator(retryDecorator, new Log4NetLogger() );
-            var commandPublisher = new CommandPublisherLoggerDecorator(log4NetLogger, new ConsoleWindowLogger());
+            var commandPublisher = new CommandPublisherLoggerDecorator(retryDecorator, new ConsoleWindowLogger());
 
             var unitOfWork = new EntityFrameworkUnitOfWork(ContextFactory);
 

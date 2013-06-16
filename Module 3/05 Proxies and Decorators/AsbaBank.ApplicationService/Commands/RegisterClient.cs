@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using AsbaBank.Core;
@@ -8,8 +7,8 @@ using AsbaBank.Core.Commands;
 namespace AsbaBank.ApplicationService.Commands
 {
     [DataContract]
-    [Authorize("Administrator")]
-    [RetryCommand(Delay = 5, RetryCount = 3, HaltOnExceptionList = new[] { typeof(IOException) })]
+    [Authorize(new[] { UserRole.Administrator})]
+    [RetryCommand(Delay = 5, RetryCount = 3, HaltOnExceptionList = new[] { typeof(UnauthorizedAccessException) })]
     public class RegisterClient : ICommand
     {
         [DataMember]

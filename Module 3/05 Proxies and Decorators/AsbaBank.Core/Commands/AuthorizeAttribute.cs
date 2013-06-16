@@ -3,22 +3,28 @@ using System.Collections.Generic;
 
 namespace AsbaBank.Core.Commands
 {
+    public enum UserRole
+    {
+        Guest,
+        Administrator
+    }
+
     [AttributeUsage(AttributeTargets.Class)]
     public class AuthorizeAttribute : Attribute
     {
-        public HashSet<string> Roles { get; private set; }
+        public UserRole[] Roles { get; private set; }
 
-        public AuthorizeAttribute(string role)
+        public AuthorizeAttribute(UserRole role)
         {
-            Roles = new HashSet<string>
+            Roles = new[]
             {
                 role
             };
         }
 
-        public AuthorizeAttribute(params string[] roles)
+        public AuthorizeAttribute(params UserRole[] roles)
         {
-            Roles = new HashSet<string>(roles);
+            Roles = roles;
         }
 
         public override string ToString()
